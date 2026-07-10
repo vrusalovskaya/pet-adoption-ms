@@ -1,0 +1,19 @@
+databaseChangeLog:
+
+  - include:
+      file: classpath:db/changelog/changes/common/000-create-schema.yaml
+
+  - include:
+      file: classpath:db/changelog/changes/catalog/001-catalog-shelters-table.yaml
+
+  - include:
+      file: classpath:db/changelog/changes/catalog/002-catalog-animals-table.yaml
+
+  - include:
+      file: classpath:db/changelog/changes/catalog/003-catalog-seed.yaml
+
+  - include:
+      file: classpath:db/changelog/changes/catalog/004-catalog-additional-shelters-seed.yaml
+
+  - include:
+      file: classpath:db/changelog/changes/catalog/005-catalog-reset-sequences.yaml
