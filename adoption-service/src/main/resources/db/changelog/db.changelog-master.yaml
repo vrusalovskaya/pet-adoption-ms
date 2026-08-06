@@ -1,0 +1,13 @@
+databaseChangeLog:
+
+  - include:
+      file: classpath:db/changelog/changes/common/000-create-schema.yaml
+
+  - include:
+      file: classpath:db/changelog/changes/adoption/001-adoption-applications-table.yaml
+
+  - include:
+      file: classpath:db/changelog/changes/adoption/002-adoption-seed.yaml
+
+  - include:
+      file: classpath:db/changelog/changes/adoption/003-adoption-reset-sequence.yaml

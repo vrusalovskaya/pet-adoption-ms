@@ -89,12 +89,6 @@ public class AnimalController {
         return ResponseEntity.noContent().build();
     }
 
-    @PatchMapping("/internal/animals/{id}/reserve")
-    public ResponseEntity<Void> reserve(@PathVariable Long id) {
-        animalService.reserveIfAvailable(id);
-        return ResponseEntity.noContent().build();
-    }
-
     private static CreateAnimalCommand toCommand(AnimalRequest request) {
         return new CreateAnimalCommand(
                 request.shelterId(), request.name(), request.species(), request.breed(), request.birthYear(),

@@ -48,6 +48,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Boolean existsById(Long id) {
+        return userRepository.existsById(id);
+    }
+
+    @Override
     @Transactional
     public User updateProfile(UpdateProfileCommand command) {
         UserEntity userEntity = getEntityById(command.id());

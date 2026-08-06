@@ -11,6 +11,8 @@ import org.springframework.data.domain.Pageable;
 public interface AnimalService {
     Animal get(Long id);
 
+    Boolean exists(Long id);
+
     Page<Animal> getAll(Species species, AnimalStatus status, Long shelterId, Pageable pageable);
 
     Animal create(CreateAnimalCommand command);

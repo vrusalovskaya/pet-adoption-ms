@@ -64,6 +64,11 @@ public class AnimalServiceImpl implements AnimalService {
     }
 
     @Override
+    public Boolean exists(Long id) {
+        return animalRepository.existsById(id);
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public Page<Animal> getAll(Species species, AnimalStatus status, Long shelterId, Pageable pageable) {
         Specification<AnimalEntity> specification = buildSpecification(species, status, shelterId);

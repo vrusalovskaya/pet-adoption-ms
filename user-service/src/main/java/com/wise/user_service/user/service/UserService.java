@@ -12,6 +12,8 @@ public interface UserService {
 
     User findById(Long id);
 
+    Boolean existsById(Long id);
+
     User updateProfile(UpdateProfileCommand request);
 
     void changePassword(ChangePasswordCommand command);
