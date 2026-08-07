@@ -1,4 +1,4 @@
-package com.wise.catalog_service.security;
+package com.wise.gateway.security;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -14,7 +14,7 @@ import java.io.IOException;
 
 @Component
 @RequiredArgsConstructor
-public class StatelessJwtFilter extends OncePerRequestFilter {
+public class GatewayJwtFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
 
