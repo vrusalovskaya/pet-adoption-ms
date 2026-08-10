@@ -1,42 +1,146 @@
 services:
+
   consul:
     image: hashicorp/consul:latest
+    container_name: consul
     command: agent -dev -client=0.0.0.0
     ports:
       - "8500:8500"
       - "8600:8600/udp"
+    networks:
+      - microservices-net
+
+  postgres-db:
+    image: postgres:16-alpine
+    container_name: postgres-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password123
+      POSTGRES_DB: postgres
+    volumes:
+      - ./init-dbs.sql:/docker-entrypoint-initdb.d/init-dbs.sql
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - microservices-net
+
+  mongo-db:
+    image: mongo:8
+    container_name: mongo-db
+    environment:
+      MONGO_INITDB_DATABASE: animals
+    volumes:
+      - mongo_data:/data/db
+    healthcheck:
+      test: [ "CMD", "mongosh", "--eval", "db.adminCommand('ping')" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    networks:
+      - microservices-net
 
   minio:
     image: quay.io/minio/minio
-
-    ports:
-      - "9000:9000"
-      - "9001:9001"
-
+    container_name: minio
     environment:
       MINIO_ROOT_USER: admin
       MINIO_ROOT_PASSWORD: admin12345
-
     volumes:
-      - ./data:/data
-
+      - minio_data:/data
     command: server /data --console-address ":9001"
-
     restart: unless-stopped
+    networks:
+      - microservices-net
 
-  mongo:
-    image: mongo:8
-
+  api-gateway:
+    build: ./gateway
+    container_name: api-gateway
     ports:
-       - "27017:27017"
+      - "8080:8080"
+    env_file:
+      - api-gateway.env
+    depends_on:
+      consul:
+        condition: service_started
+      config-server:
+        condition: service_healthy
+    networks:
+      - microservices-net
 
-    environment:
-      MONGO_INITDB_DATABASE: animals
+  config-server:
+    build: ./config-server
+    container_name: config-server
+    env_file:
+      - config-server.env
+    healthcheck:
+      test: [ "CMD", "wget", "-q", "--spider", "http://localhost:8888/actuator/health" ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    depends_on:
+      - consul
+    networks:
+      - microservices-net
 
-    volumes:
-        - mongo_data:/data/db
+  user-service:
+    build: ./user-service
+    container_name: user-service
+    env_file:
+      - user-service.env
+    depends_on:
+      postgres-db:
+        condition: service_healthy
+      consul:
+        condition: service_started
+      config-server:
+        condition: service_healthy
+    networks:
+      - microservices-net
 
-    restart: unless-stopped
+  catalog-service:
+    build: ./catalog-service
+    container_name: catalog-service
+    env_file:
+      - catalog-service.env
+    depends_on:
+      postgres-db:
+        condition: service_healthy
+      mongo-db:
+        condition: service_healthy
+      minio:
+        condition: service_started
+      consul:
+        condition: service_started
+      config-server:
+        condition: service_healthy
+    networks:
+      - microservices-net
+
+  adoption-service:
+    build: ./adoption-service
+    container_name: adoption-service
+    env_file:
+      - adoption-service.env
+    depends_on:
+      postgres-db:
+        condition: service_healthy
+      consul:
+        condition: service_started
+      config-server:
+        condition: service_healthy
+    networks:
+      - microservices-net
+
+networks:
+  microservices-net:
+    driver: bridge
 
 volumes:
-   mongo_data:
+  pgdata:
+  mongo_data:
+  minio_data:
