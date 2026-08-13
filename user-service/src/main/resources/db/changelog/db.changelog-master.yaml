@@ -20,3 +20,6 @@ databaseChangeLog:
 
   - include:
       file: classpath:db/changelog/changes/scheduler/001-shedlock-table.yaml
+
+  - include:
+      file: classpath:db/changelog/changes/outbox/001-user-deleted-outbox-table.yaml

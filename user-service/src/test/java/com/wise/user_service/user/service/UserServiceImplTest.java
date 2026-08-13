@@ -10,6 +10,7 @@ import com.wise.user_service.user.exception.InvalidPasswordException;
 import com.wise.user_service.user.exception.UserNotFoundException;
 import com.wise.user_service.user.mapper.UserEntityMapper;
 import com.wise.user_service.user.mapper.UserEntityMapperImpl;
+import com.wise.user_service.user.persistence.UserDeletedOutboxRepository;
 import com.wise.user_service.user.persistence.UserEntity;
 import com.wise.user_service.user.persistence.UserRepository;
 import jakarta.persistence.EntityManager;
@@ -22,6 +23,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import java.time.Clock;
 import java.util.Optional;
 
 import static com.wise.user_service.support.TestFixtures.user;
@@ -41,6 +43,10 @@ class UserServiceImplTest {
     private UserRepository userRepository;
     @Mock
     private EntityManager entityManager;
+    @Mock
+    private UserDeletedOutboxRepository userDeletedOutboxRepository;
+    @Mock
+    private Clock clock;
 
     private UserServiceImpl userService;
 
@@ -49,7 +55,9 @@ class UserServiceImplTest {
         userService = new UserServiceImpl(
                 entityMapper,
                 passwordEncoder,
-                userRepository
+                userRepository,
+                userDeletedOutboxRepository,
+                clock
         );
 
         ReflectionTestUtils.setField(userService, "entityManager", entityManager);

@@ -57,6 +57,27 @@ services:
     networks:
       - microservices-net
 
+  kafka:
+    image: apache/kafka:latest
+    container_name: kafka
+    env_file:
+      - kafka.env
+    networks:
+      - microservices-net
+
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    container_name: kafka-ui
+    ports:
+      - "8085:8080"
+    environment:
+      KAFKA_CLUSTERS_0_NAME: local-kraft-cluster
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:29092
+    depends_on:
+      - kafka
+    networks:
+      - microservices-net
+
   api-gateway:
     build: ./gateway
     container_name: api-gateway

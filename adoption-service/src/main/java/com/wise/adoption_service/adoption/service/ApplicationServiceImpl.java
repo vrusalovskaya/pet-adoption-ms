@@ -1,5 +1,6 @@
 package com.wise.adoption_service.adoption.service;
 
+import com.wise.adoption_service.adoption.client.CatalogClient;
 import com.wise.adoption_service.adoption.client.UserClient;
 import com.wise.adoption_service.adoption.common.ApplicationStatus;
 import com.wise.adoption_service.adoption.domain.Application;
@@ -12,7 +13,6 @@ import com.wise.adoption_service.adoption.mapper.ApplicationEntityMapper;
 import com.wise.adoption_service.adoption.persistence.ApplicationEntity;
 import com.wise.adoption_service.adoption.persistence.ApplicationRepository;
 import com.wise.adoption_service.adoption.persistence.ApplicationSpecifications;
-import com.wise.adoption_service.adoption.client.CatalogClient;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +26,7 @@ import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
-public class ApplicationServiceImpl implements ApplicationService {
+public class ApplicationServiceImpl implements ApplicationService, DeleteApplicationsForDeletedUser {
 
     private final ApplicationRepository applicationRepository;
     private final CatalogClient catalogClient;
@@ -117,6 +117,12 @@ public class ApplicationServiceImpl implements ApplicationService {
         saveAndRefresh(applicationEntity);
 
         return entityMapper.toModel(applicationEntity);
+    }
+
+    @Override
+    @Transactional
+    public void deleteByApplicantId(Long applicantId) {
+        applicationRepository.deleteByApplicantId(applicantId);
     }
 
     private ApplicationEntity saveAndRefresh(ApplicationEntity applicationEntity) {

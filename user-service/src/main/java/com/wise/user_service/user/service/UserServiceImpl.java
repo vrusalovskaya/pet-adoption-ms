@@ -8,6 +8,8 @@ import com.wise.user_service.user.exception.EmailAlreadyExistsException;
 import com.wise.user_service.user.exception.InvalidPasswordException;
 import com.wise.user_service.user.exception.UserNotFoundException;
 import com.wise.user_service.user.mapper.UserEntityMapper;
+import com.wise.user_service.user.persistence.UserDeletedOutboxEntity;
+import com.wise.user_service.user.persistence.UserDeletedOutboxRepository;
 import com.wise.user_service.user.persistence.UserEntity;
 import com.wise.user_service.user.persistence.UserRepository;
 import jakarta.persistence.EntityManager;
@@ -17,12 +19,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Clock;
+
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserEntityMapper entityMapper;
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
+    private final UserDeletedOutboxRepository userDeletedOutboxRepository;
+    private final Clock clock;
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -78,6 +84,9 @@ public class UserServiceImpl implements UserService {
     public void delete(Long id) {
         UserEntity userEntity = getEntityById(id);
         userRepository.delete(userEntity);
+        userDeletedOutboxRepository.save(
+                new UserDeletedOutboxEntity(id, clock.instant())
+        );
     }
 
     private UserEntity getEntityById(Long id) {

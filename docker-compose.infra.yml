@@ -38,5 +38,30 @@ services:
 
     restart: unless-stopped
 
+  kafka:
+    image: apache/kafka:latest
+    ports:
+      - "9092:9092"
+    env_file:
+      - kafka.env
+    networks:
+      - app-network
+
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    ports:
+      - "8085:8080"
+    environment:
+      KAFKA_CLUSTERS_0_NAME: local-kraft-cluster
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:29092
+    depends_on:
+      - kafka
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
 volumes:
    mongo_data:

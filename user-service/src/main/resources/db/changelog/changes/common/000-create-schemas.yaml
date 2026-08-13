@@ -14,3 +14,6 @@ databaseChangeLog:
 
         - sql:
             sql: CREATE SCHEMA IF NOT EXISTS scheduler;
+
+        - sql:
+            sql: CREATE SCHEMA IF NOT EXISTS outbox;
