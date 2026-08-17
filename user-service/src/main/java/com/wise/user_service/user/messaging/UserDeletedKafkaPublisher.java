@@ -1,7 +1,6 @@
-package com.wise.user_service.user.service;
+package com.wise.user_service.user.messaging;
 
 import com.wise.user_service.user.config.KafkaTopicsProperties;
-import com.wise.user_service.user.events.UserDeletedV1;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;

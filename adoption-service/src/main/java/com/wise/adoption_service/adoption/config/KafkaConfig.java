@@ -1,6 +1,6 @@
-package com.wise.user_service.user.config;
+package com.wise.adoption_service.adoption.config;
 
-import com.wise.user_service.user.messaging.UserDeletedV1;
+import com.wise.adoption_service.adoption.messaging.ApplicationRevokedV1;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.kafka.autoconfigure.KafkaProperties;
 import org.springframework.context.annotation.Bean;
@@ -16,15 +16,15 @@ import java.util.Map;
 public class KafkaConfig {
 
     @Bean
-    public ProducerFactory<String, UserDeletedV1> userDeletedProducerFactory(KafkaProperties kafkaProperties) {
+    public ProducerFactory<String, ApplicationRevokedV1> applicationRevokedProducerFactory(KafkaProperties kafkaProperties) {
         Map<String, Object> props = kafkaProperties.buildProducerProperties();
         return new DefaultKafkaProducerFactory<>(props);
     }
 
     @Bean
-    public KafkaTemplate<String, UserDeletedV1> kafkaTemplate(
-            ProducerFactory<String, UserDeletedV1> userDeletedProducerFactory
+    public KafkaTemplate<String, ApplicationRevokedV1> kafkaTemplate(
+            ProducerFactory<String, ApplicationRevokedV1> applicationRevokedProducerFactory
     ) {
-        return new KafkaTemplate<>(userDeletedProducerFactory);
+        return new KafkaTemplate<>(applicationRevokedProducerFactory);
     }
 }

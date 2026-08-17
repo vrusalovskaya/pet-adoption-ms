@@ -8,16 +8,24 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+
 public interface ApplicationRepository extends
         JpaRepository<ApplicationEntity, Long>,
         JpaSpecificationExecutor<ApplicationEntity> {
 
     Page<ApplicationEntity> findByApplicantId(Long applicantId, Pageable pageable);
 
+    @Query("""
+        select application from ApplicationEntity application
+        where application.applicantId = :applicantId and application.status = 'APPROVED'
+        """)
+    List<ApplicationEntity> findApprovedByApplicantId(Long applicantId);
+
     @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Query("""
         delete from ApplicationEntity application
         where application.applicantId = :applicantId
         """)
-    int deleteByApplicantId(@Param("applicantId") Long applicantId);
+    void deleteByApplicantId(@Param("applicantId") Long applicantId);
 }

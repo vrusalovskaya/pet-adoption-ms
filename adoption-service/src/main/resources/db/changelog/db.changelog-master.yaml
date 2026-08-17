@@ -11,3 +11,9 @@ databaseChangeLog:
 
   - include:
       file: classpath:db/changelog/changes/adoption/003-adoption-reset-sequence.yaml
+
+  - include:
+      file: classpath:db/changelog/changes/scheduler/001-shedlock-table.yaml
+
+  - include:
+      file: classpath:db/changelog/changes/outbox/001-application-revoked-outbox-table.yaml

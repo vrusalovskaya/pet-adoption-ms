@@ -1,8 +1,8 @@
-package com.wise.user_service.user.service;
+package com.wise.adoption_service.adoption.service;
 
-import com.wise.user_service.user.common.OutboxStatus;
-import com.wise.user_service.user.persistence.UserDeletedOutboxEntity;
-import com.wise.user_service.user.persistence.UserDeletedOutboxRepository;
+import com.wise.adoption_service.adoption.common.OutboxStatus;
+import com.wise.adoption_service.adoption.persistence.ApplicationRevokedOutboxEntity;
+import com.wise.adoption_service.adoption.persistence.ApplicationRevokedOutboxRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -16,14 +16,14 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class UserDeletedOutboxService {
+public class ApplicationRevokedOutboxService {
 
-    private final UserDeletedOutboxRepository repository;
+    private final ApplicationRevokedOutboxRepository repository;
     private final Clock clock;
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public List<UserDeletedOutboxEntity> claimPendingEvents(int limit) {
-        List<UserDeletedOutboxEntity> events = repository.findPending(PageRequest.of(0, limit));
+    public List<ApplicationRevokedOutboxEntity> claimPendingEvents(int limit) {
+        List<ApplicationRevokedOutboxEntity> events = repository.findPending(PageRequest.of(0, limit));
         Instant now = clock.instant();
         events.forEach(e -> {
             e.setStatus(OutboxStatus.PROCESSING);

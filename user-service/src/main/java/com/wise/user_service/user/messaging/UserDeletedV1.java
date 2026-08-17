@@ -1,4 +1,4 @@
-package com.wise.user_service.user.events;
+package com.wise.user_service.user.messaging;
 
 import java.time.Instant;
 import java.util.UUID;

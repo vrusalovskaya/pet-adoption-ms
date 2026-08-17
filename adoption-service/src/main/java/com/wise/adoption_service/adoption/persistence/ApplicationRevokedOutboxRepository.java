@@ -1,4 +1,4 @@
-package com.wise.user_service.user.persistence;
+package com.wise.adoption_service.adoption.persistence;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,21 +10,21 @@ import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
-public interface UserDeletedOutboxRepository extends JpaRepository<UserDeletedOutboxEntity, UUID> {
+public interface ApplicationRevokedOutboxRepository extends JpaRepository<ApplicationRevokedOutboxEntity, UUID> {
 
     @Query("""
-            SELECT e FROM UserDeletedOutboxEntity e
+            SELECT e FROM ApplicationRevokedOutboxEntity e
             WHERE e.status = 'PENDING' ORDER BY e.occurredAt
             """)
-    List<UserDeletedOutboxEntity> findPending(Pageable pageable);
+    List<ApplicationRevokedOutboxEntity> findPending(Pageable pageable);
 
     @Modifying
-    @Query("UPDATE UserDeletedOutboxEntity e SET e.status = 'PUBLISHED', e.publishedAt = :now WHERE e.eventId = :id")
+    @Query("UPDATE ApplicationRevokedOutboxEntity e SET e.status = 'PUBLISHED', e.publishedAt = :now WHERE e.eventId = :id")
     void markAsPublished(@Param("id") UUID id, @Param("now") Instant now);
 
     @Modifying
     @Query("""
-            UPDATE UserDeletedOutboxEntity e
+            UPDATE ApplicationRevokedOutboxEntity e
             SET e.status = 'PENDING', e.processingStartedAt = null
             WHERE e.status = 'PROCESSING' AND e.processingStartedAt < :threshold
             """)

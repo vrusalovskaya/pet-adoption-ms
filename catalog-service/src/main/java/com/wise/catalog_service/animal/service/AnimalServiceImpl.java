@@ -31,7 +31,7 @@ import static com.wise.catalog_service.animal.common.AnimalStatus.*;
 
 @Service
 @RequiredArgsConstructor
-public class AnimalServiceImpl implements AnimalService {
+public class AnimalServiceImpl implements AnimalService, ReleaseAnimalUseCase {
 
     /**
      * Defines the valid lifecycle transitions for an animal.
@@ -128,6 +128,12 @@ public class AnimalServiceImpl implements AnimalService {
         if (updated == 0) {
             throw new AnimalNotAvailableException(id);
         }
+    }
+
+    @Override
+    @Transactional
+    public void execute(Long animalId) {
+        animalRepository.releaseAnimal(animalId);
     }
 
     private AnimalEntity getEntityById(Long id) {

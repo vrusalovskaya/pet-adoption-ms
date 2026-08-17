@@ -1,6 +1,6 @@
-package com.wise.user_service.user.persistence;
+package com.wise.adoption_service.adoption.persistence;
 
-import com.wise.user_service.user.common.OutboxStatus;
+import com.wise.adoption_service.adoption.common.OutboxStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,18 +10,20 @@ import java.time.Instant;
 import java.util.UUID;
 
 @Entity
-@Table(schema = "outbox", name = "user_deleted_outbox")
+@Table(schema = "outbox", name = "application_revoked_outbox")
 @Getter
 @Setter
 @NoArgsConstructor
-public class UserDeletedOutboxEntity {
-
+public class ApplicationRevokedOutboxEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID eventId;
 
     @Column(nullable = false)
-    private Long userId;
+    private Long applicationId;
+
+    @Column(nullable = false)
+    private Long animalId;
 
     @Enumerated(EnumType.STRING)
     @Column(length = 20, nullable = false)
@@ -34,8 +36,9 @@ public class UserDeletedOutboxEntity {
 
     private Instant publishedAt;
 
-    public UserDeletedOutboxEntity(Long userId, Instant occurredAt) {
-        this.userId = userId;
+    public ApplicationRevokedOutboxEntity(Long applicationId, Long animalId, Instant occurredAt) {
+        this.applicationId = applicationId;
+        this.animalId = animalId;
         this.status = OutboxStatus.PENDING;
         this.occurredAt = occurredAt;
     }

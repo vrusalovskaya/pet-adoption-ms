@@ -10,9 +10,7 @@ import com.wise.adoption_service.adoption.exception.ApplicationAccessDeniedExcep
 import com.wise.adoption_service.adoption.exception.ApplicationNotFoundException;
 import com.wise.adoption_service.adoption.exception.ApplicationNotPendingException;
 import com.wise.adoption_service.adoption.mapper.ApplicationEntityMapper;
-import com.wise.adoption_service.adoption.persistence.ApplicationEntity;
-import com.wise.adoption_service.adoption.persistence.ApplicationRepository;
-import com.wise.adoption_service.adoption.persistence.ApplicationSpecifications;
+import com.wise.adoption_service.adoption.persistence.*;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +20,8 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Clock;
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -32,6 +32,8 @@ public class ApplicationServiceImpl implements ApplicationService, DeleteApplica
     private final CatalogClient catalogClient;
     private final UserClient userClient;
     private final ApplicationEntityMapper entityMapper;
+    private final ApplicationRevokedOutboxRepository  applicationRevokedOutboxRepository;
+    private final Clock clock;
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -122,7 +124,12 @@ public class ApplicationServiceImpl implements ApplicationService, DeleteApplica
     @Override
     @Transactional
     public void deleteByApplicantId(Long applicantId) {
+        List<ApplicationEntity> approvedEntities = applicationRepository.findApprovedByApplicantId(applicantId);
         applicationRepository.deleteByApplicantId(applicantId);
+        for (ApplicationEntity application : approvedEntities) {
+            applicationRevokedOutboxRepository.save(new ApplicationRevokedOutboxEntity(
+                   applicantId, application.getAnimalId(), clock.instant()));
+        }
     }
 
     private ApplicationEntity saveAndRefresh(ApplicationEntity applicationEntity) {

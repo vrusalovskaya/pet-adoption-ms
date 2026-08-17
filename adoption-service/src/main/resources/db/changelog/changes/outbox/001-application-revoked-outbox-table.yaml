@@ -1,14 +1,14 @@
 databaseChangeLog:
 
   - changeSet:
-      id: 001-user-deleted-outbox-table
+      id: 001-application-revoked-outbox-table
       author: victoria
 
       changes:
 
         - createTable:
             schemaName: outbox
-            tableName: user_deleted_outbox
+            tableName: application_revoked_outbox
 
             columns:
 
@@ -20,7 +20,13 @@ databaseChangeLog:
                     nullable: false
 
               - column:
-                  name: user_id
+                  name: animal_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: application_id
                   type: BIGINT
                   constraints:
                     nullable: false
@@ -47,8 +53,8 @@ databaseChangeLog:
 
         - createIndex:
             schemaName: outbox
-            tableName: user_deleted_outbox
-            indexName: idx_user_deleted_status_occured_at
+            tableName: application_revoked_outbox
+            indexName: idx_application_revoked_status_occured_at
 
             columns:
               - column:
@@ -59,8 +65,8 @@ databaseChangeLog:
 
         - createIndex:
             schemaName: outbox
-            tableName: user_deleted_outbox
-            indexName: idx_user_deleted_status_processing_started_at
+            tableName: application_revoked_outbox
+            indexName: idx_application_revoked_status_processing_started_at
 
             columns:
               - column:

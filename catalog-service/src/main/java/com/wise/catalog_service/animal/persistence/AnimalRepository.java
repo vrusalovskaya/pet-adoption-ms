@@ -17,4 +17,12 @@ public interface AnimalRepository extends
                 and a.status = 'AVAILABLE'
             """)
     int reserveAnimal(Long id);
+
+    @Modifying
+    @Query("""
+                update AnimalEntity a
+                set a.status = 'AVAILABLE'
+                where a.id = :id and a.status = 'RESERVED'
+            """)
+    void releaseAnimal(Long id);
 }
