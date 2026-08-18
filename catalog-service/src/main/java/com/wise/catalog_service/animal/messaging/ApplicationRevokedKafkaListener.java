@@ -12,7 +12,8 @@ public class ApplicationRevokedKafkaListener {
 
     @KafkaListener(
             topics = "${app.kafka.topics.application-revoked}",
-            groupId = "${app.kafka.groups.application-revoked}"
+            groupId = "${app.kafka.groups.application-revoked}",
+            containerFactory = "applicationRevokedKafkaListenerContainerFactory"
     )
     public void onApplicationRevoked(ApplicationRevokedV1 event) {
         releaseAnimalUseCase.execute(event.animalId());

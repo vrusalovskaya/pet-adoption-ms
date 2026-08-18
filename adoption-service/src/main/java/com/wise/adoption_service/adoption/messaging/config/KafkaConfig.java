@@ -1,4 +1,4 @@
-package com.wise.adoption_service.adoption.config;
+package com.wise.adoption_service.adoption.messaging.config;
 
 import com.wise.adoption_service.adoption.messaging.ApplicationRevokedV1;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;

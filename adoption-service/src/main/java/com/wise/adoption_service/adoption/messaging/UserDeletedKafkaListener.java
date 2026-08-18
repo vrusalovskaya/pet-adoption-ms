@@ -13,7 +13,8 @@ public class UserDeletedKafkaListener {
 
     @KafkaListener(
             topics = "${app.kafka.topics.user-deleted}",
-            groupId = "${app.kafka.groups.user-deletion}"
+            groupId = "${app.kafka.groups.user-deletion}",
+            containerFactory = "userDeletedKafkaListenerContainerFactory"
     )
     public void onUserDeleted(UserDeletedV1 event) {
         deleteApplications.deleteByApplicantId(event.userId());

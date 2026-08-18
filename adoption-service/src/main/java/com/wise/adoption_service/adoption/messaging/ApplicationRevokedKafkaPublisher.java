@@ -1,6 +1,6 @@
 package com.wise.adoption_service.adoption.messaging;
 
-import com.wise.adoption_service.adoption.config.KafkaTopicsProperties;
+import com.wise.adoption_service.adoption.messaging.config.KafkaTopicsProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
