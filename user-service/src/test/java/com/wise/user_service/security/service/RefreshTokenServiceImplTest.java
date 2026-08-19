@@ -59,8 +59,7 @@ class RefreshTokenServiceImplTest {
 
         String rawToken = refreshTokenService.create(1L);
 
-        assertThat(rawToken).isNotBlank();
-        assertThat(rawToken).isNotEqualTo("token-hash");
+        assertThat(rawToken).isNotBlank().isNotEqualTo("token-hash");
         ArgumentCaptor<RefreshTokenEntity> captor = ArgumentCaptor.forClass(RefreshTokenEntity.class);
         verify(repository).save(captor.capture());
         RefreshTokenEntity saved = captor.getValue();

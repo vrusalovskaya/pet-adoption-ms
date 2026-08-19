@@ -2,6 +2,7 @@ package com.wise.catalog_service.animal.service;
 
 import com.wise.catalog_service.animal.common.AnimalStatus;
 import com.wise.catalog_service.animal.domain.CreateAnimalCommand;
+import com.wise.catalog_service.animal.domain.UpdateAnimalCommand;
 import com.wise.catalog_service.animal.exception.AnimalNotAvailableException;
 import com.wise.catalog_service.animal.exception.AnimalNotFoundException;
 import com.wise.catalog_service.animal.exception.NotValidAnimalStatusTransitionException;
@@ -83,7 +84,8 @@ class AnimalServiceImplTest {
     void update_UnknownAnimal_ThrowsAnimalNotFoundException() {
         when(animalRepository.findById(99L)).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> animalService.update(updateAnimalCommand(99L, 7L)))
+        UpdateAnimalCommand command = updateAnimalCommand(99L, 7L);
+        assertThatThrownBy(() -> animalService.update(command))
                 .isInstanceOf(AnimalNotFoundException.class);
     }
 
@@ -93,7 +95,8 @@ class AnimalServiceImplTest {
         when(animalRepository.findById(1L)).thenReturn(Optional.of(loaded));
         when(shelterRepository.findById(7L)).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> animalService.update(updateAnimalCommand(1L, 7L)))
+        UpdateAnimalCommand command = updateAnimalCommand(1L, 7L);
+        assertThatThrownBy(() -> animalService.update(command))
                 .isInstanceOf(ShelterNotFoundException.class);
     }
 

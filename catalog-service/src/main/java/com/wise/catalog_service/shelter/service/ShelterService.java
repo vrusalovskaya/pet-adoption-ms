@@ -1,8 +1,8 @@
 package com.wise.catalog_service.shelter.service;
 
 import com.wise.catalog_service.shelter.domain.CreateShelterCommand;
-import com.wise.catalog_service.shelter.domain.UpdateShelterCommand;
 import com.wise.catalog_service.shelter.domain.Shelter;
+import com.wise.catalog_service.shelter.domain.UpdateShelterCommand;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

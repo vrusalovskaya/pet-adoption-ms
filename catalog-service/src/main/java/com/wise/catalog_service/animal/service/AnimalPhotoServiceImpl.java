@@ -6,9 +6,9 @@ import com.wise.catalog_service.animal.exception.AnimalPhotoNotFoundException;
 import com.wise.catalog_service.animal.persistence.AnimalEntity;
 import com.wise.catalog_service.animal.persistence.AnimalRepository;
 import com.wise.catalog_service.animal.persistence.PhotoMetadata;
+import com.wise.catalog_service.shared.storage.contract.ImageStorage;
 import com.wise.catalog_service.shared.storage.model.StoredImage;
 import com.wise.catalog_service.shared.storage.model.StoredImageStream;
-import com.wise.catalog_service.shared.storage.contract.ImageStorage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -74,11 +74,12 @@ public class AnimalPhotoServiceImpl implements AnimalPhotoService {
     }
 
     private void validateFile(MultipartFile file) {
-        if (file.isEmpty()) {
+        if (file == null || file.isEmpty()) {
             throw new AnimalPhotoException("Uploaded file is empty");
         }
 
-        if (file.getContentType() == null || !file.getContentType().startsWith("image/")) {
+        String contentType = file.getContentType();
+        if (contentType == null || !contentType.startsWith("image/")) {
             throw new AnimalPhotoException("Only image files are allowed");
         }
     }

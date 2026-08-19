@@ -20,8 +20,7 @@ import static com.wise.user_service.support.TestFixtures.user;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class AuthenticationFacadeImplTest {
@@ -42,7 +41,7 @@ class AuthenticationFacadeImplTest {
     void login_ValidCredentials_ReturnsAccessAndRefreshTokens() {
         LoginCommand command = new LoginCommand("jane@example.com", "raw-password");
         SecurityUser principal = securityUser(1L, "jane@example.com", Role.ROLE_USER);
-        Authentication authentication = org.mockito.Mockito.mock(Authentication.class);
+        Authentication authentication = mock(Authentication.class);
         when(authenticationManager.authenticate(any())).thenReturn(authentication);
         when(authentication.getPrincipal()).thenReturn(principal);
         when(jwtService.generateAccessToken(principal)).thenReturn("access-token");
@@ -56,7 +55,7 @@ class AuthenticationFacadeImplTest {
     @Test
     void login_PrincipalIsNotSecurityUser_ThrowsIllegalStateException() {
         LoginCommand command = new LoginCommand("jane@example.com", "raw-password");
-        Authentication authentication = org.mockito.Mockito.mock(Authentication.class);
+        Authentication authentication = mock(Authentication.class);
         when(authenticationManager.authenticate(any())).thenReturn(authentication);
         when(authentication.getPrincipal()).thenReturn("not-a-security-user");
 

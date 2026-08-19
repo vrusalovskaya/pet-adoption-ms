@@ -2,7 +2,6 @@ package com.wise.user_service.support;
 
 import com.wise.user_service.security.integration.CustomUserDetailsService;
 import com.wise.user_service.security.jwt.JwtService;
-import org.mockito.Mockito;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -10,6 +9,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
+
+import static org.mockito.Mockito.mock;
 
 @TestConfiguration
 @EnableWebSecurity
@@ -26,11 +27,11 @@ public class WebMvcTestSecurityConfig {
 
     @Bean
     public JwtService jwtService() {
-        return Mockito.mock(JwtService.class);
+        return mock(JwtService.class);
     }
 
     @Bean
     public CustomUserDetailsService customUserDetailsService() {
-        return Mockito.mock(CustomUserDetailsService.class);
+        return mock(CustomUserDetailsService.class);
     }
 }

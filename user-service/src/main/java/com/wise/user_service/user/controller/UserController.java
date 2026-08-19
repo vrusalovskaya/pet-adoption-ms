@@ -1,14 +1,14 @@
 package com.wise.user_service.user.controller;
 
 import com.wise.user_service.security.domain.SecurityUser;
+import com.wise.user_service.user.api.ChangePasswordRequest;
+import com.wise.user_service.user.api.UpdateProfileRequest;
+import com.wise.user_service.user.api.UserResponse;
 import com.wise.user_service.user.domain.ChangePasswordCommand;
 import com.wise.user_service.user.domain.UpdateProfileCommand;
 import com.wise.user_service.user.domain.User;
 import com.wise.user_service.user.mapper.UserResponseMapper;
 import com.wise.user_service.user.service.UserService;
-import com.wise.user_service.user.api.ChangePasswordRequest;
-import com.wise.user_service.user.api.UpdateProfileRequest;
-import com.wise.user_service.user.api.UserResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +24,7 @@ public class UserController {
 
     @PatchMapping("/me")
     public ResponseEntity<UserResponse> updateProfile(@AuthenticationPrincipal SecurityUser user,
-                                      @Valid @RequestBody UpdateProfileRequest request
+                                                      @Valid @RequestBody UpdateProfileRequest request
     ) {
         User updated = userService.updateProfile(toCommand(user.getUserId(), request));
         UserResponse userResponse = responseMapper.toResponse(updated);

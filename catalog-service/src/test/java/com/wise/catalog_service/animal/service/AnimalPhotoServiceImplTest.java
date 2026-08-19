@@ -105,7 +105,7 @@ class AnimalPhotoServiceImplTest {
     @Test
     void replacePhoto_InputStreamFailure_ThrowsAnimalPhotoException() throws IOException {
         AnimalEntity animal = availableAnimal();
-        MultipartFile file = org.mockito.Mockito.mock(MultipartFile.class);
+        MultipartFile file = mock(MultipartFile.class);
         when(animalRepository.findById(1L)).thenReturn(Optional.of(animal));
         when(file.getInputStream()).thenThrow(new IOException("boom"));
 
@@ -115,7 +115,7 @@ class AnimalPhotoServiceImplTest {
 
     @Test
     void replacePhoto_UnknownAnimal_ThrowsAnimalNotFoundException() {
-        MultipartFile file = org.mockito.Mockito.mock(MultipartFile.class);
+        MultipartFile file = mock(MultipartFile.class);
         when(animalRepository.findById(99L)).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> animalPhotoService.replacePhoto(99L, file))
@@ -168,7 +168,7 @@ class AnimalPhotoServiceImplTest {
     }
 
     private MultipartFile imageFile(String contentType, String filename, long size) throws IOException {
-        MultipartFile file = org.mockito.Mockito.mock(MultipartFile.class);
+        MultipartFile file = mock(MultipartFile.class);
         lenient().when(file.getInputStream()).thenReturn(new ByteArrayInputStream(new byte[]{1, 2, 3}));
         lenient().when(file.getContentType()).thenReturn(contentType);
         lenient().when(file.getOriginalFilename()).thenReturn(filename);

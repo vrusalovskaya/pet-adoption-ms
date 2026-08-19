@@ -1,12 +1,12 @@
 package com.wise.catalog_service.shared.storage.mongo;
 
 import com.mongodb.client.gridfs.model.GridFSFile;
+import com.wise.catalog_service.shared.storage.contract.ImageStorage;
 import com.wise.catalog_service.shared.storage.exception.ImageNotFoundException;
 import com.wise.catalog_service.shared.storage.exception.ImageStorageException;
 import com.wise.catalog_service.shared.storage.model.StorageType;
 import com.wise.catalog_service.shared.storage.model.StoredImage;
 import com.wise.catalog_service.shared.storage.model.StoredImageStream;
-import com.wise.catalog_service.shared.storage.contract.ImageStorage;
 import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
 import org.jspecify.annotations.NonNull;
@@ -29,6 +29,17 @@ public class GridFsImageStorage implements ImageStorage {
 
     private final GridFsTemplate gridFs;
     private final GridFsOperations ops;
+
+    private static ObjectId getObjectId(String key) {
+        ObjectId objectId;
+        try {
+            objectId = new ObjectId(key);
+
+        } catch (IllegalArgumentException ex) {
+            throw new ImageNotFoundException(key);
+        }
+        return objectId;
+    }
 
     @Override
     public StoredImage save(InputStream content, long size,
@@ -66,16 +77,5 @@ public class GridFsImageStorage implements ImageStorage {
         GridFSFile file = gridFs.findOne(query(where("_id").is(objectId)));
         if (file == null) throw new ImageNotFoundException(key);
         return file;
-    }
-
-    private static ObjectId getObjectId(String key) {
-        ObjectId objectId;
-        try {
-            objectId = new ObjectId(key);
-
-        } catch (IllegalArgumentException ex) {
-            throw new ImageNotFoundException(key);
-        }
-        return objectId;
     }
 }

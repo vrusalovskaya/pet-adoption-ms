@@ -8,8 +8,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling
 public class AdoptionServiceApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(AdoptionServiceApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(AdoptionServiceApplication.class, args);
+    }
 
 }

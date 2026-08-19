@@ -32,7 +32,7 @@ public class ApplicationServiceImpl implements ApplicationService, DeleteApplica
     private final CatalogClient catalogClient;
     private final UserClient userClient;
     private final ApplicationEntityMapper entityMapper;
-    private final ApplicationRevokedOutboxRepository  applicationRevokedOutboxRepository;
+    private final ApplicationRevokedOutboxRepository applicationRevokedOutboxRepository;
     private final Clock clock;
     @PersistenceContext
     private EntityManager entityManager;
@@ -128,7 +128,7 @@ public class ApplicationServiceImpl implements ApplicationService, DeleteApplica
         applicationRepository.deleteByApplicantId(applicantId);
         for (ApplicationEntity application : approvedEntities) {
             applicationRevokedOutboxRepository.save(new ApplicationRevokedOutboxEntity(
-                   applicantId, application.getAnimalId(), clock.instant()));
+                    applicantId, application.getAnimalId(), clock.instant()));
         }
     }
 

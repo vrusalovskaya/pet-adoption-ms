@@ -3,8 +3,8 @@ package com.wise.catalog_service.shelter.controller;
 import com.wise.catalog_service.shelter.api.ShelterRequest;
 import com.wise.catalog_service.shelter.api.ShelterResponse;
 import com.wise.catalog_service.shelter.domain.CreateShelterCommand;
-import com.wise.catalog_service.shelter.domain.UpdateShelterCommand;
 import com.wise.catalog_service.shelter.domain.Shelter;
+import com.wise.catalog_service.shelter.domain.UpdateShelterCommand;
 import com.wise.catalog_service.shelter.mapper.ShelterResponseMapper;
 import com.wise.catalog_service.shelter.service.ShelterService;
 import jakarta.validation.Valid;
@@ -26,6 +26,20 @@ import java.net.URI;
 public class ShelterController {
     private final ShelterService shelterService;
     private final ShelterResponseMapper responseMapper;
+
+    private static CreateShelterCommand toCommand(ShelterRequest request) {
+        return new CreateShelterCommand(
+                request.name(), request.city(), request.address(),
+                request.contactEmail(), request.contactPhone(), request.description()
+        );
+    }
+
+    private static UpdateShelterCommand toCommand(Long id, ShelterRequest request) {
+        return new UpdateShelterCommand(
+                id, request.name(), request.city(), request.address(),
+                request.contactEmail(), request.contactPhone(), request.description()
+        );
+    }
 
     @GetMapping
     public Page<ShelterResponse> getAll(@RequestParam(required = false) String city,
@@ -81,19 +95,5 @@ public class ShelterController {
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         shelterService.delete(id);
         return ResponseEntity.noContent().build();
-    }
-
-    private static CreateShelterCommand toCommand(ShelterRequest request) {
-        return new CreateShelterCommand(
-                request.name(), request.city(), request.address(),
-                request.contactEmail(), request.contactPhone(), request.description()
-        );
-    }
-
-    private static UpdateShelterCommand toCommand(Long id, ShelterRequest request) {
-        return new UpdateShelterCommand(
-                id, request.name(), request.city(), request.address(),
-                request.contactEmail(), request.contactPhone(), request.description()
-        );
     }
 }

@@ -1,5 +1,6 @@
 package com.wise.catalog_service.shelter.controller;
 
+import com.wise.catalog_service.security.Role;
 import com.wise.catalog_service.security.SecurityUser;
 import com.wise.catalog_service.shelter.api.ShelterResponse;
 import com.wise.catalog_service.shelter.domain.CreateShelterCommand;
@@ -8,7 +9,6 @@ import com.wise.catalog_service.shelter.mapper.ShelterResponseMapper;
 import com.wise.catalog_service.shelter.service.ShelterService;
 import com.wise.catalog_service.support.TestFixtures;
 import com.wise.catalog_service.support.WebMvcTestSecurityConfig;
-import com.wise.catalog_service.security.Role;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;

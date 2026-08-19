@@ -51,9 +51,9 @@ public class ApplicationRevokedConsumerFailureHandlingConfig {
     ) {
         DeadLetterPublishingRecoverer recoverer = new DeadLetterPublishingRecoverer(
                 applicationRevokedDltKafkaTemplate,
-                (record, exception) -> new TopicPartition(
+                (customerRecord, exception) -> new TopicPartition(
                         kafkaTopicsProperties.getApplicationRevokedDlt(),
-                        record.partition()
+                        customerRecord.partition()
                 )
         );
 
@@ -65,7 +65,7 @@ public class ApplicationRevokedConsumerFailureHandlingConfig {
 
     @Bean
     ConcurrentKafkaListenerContainerFactory<String, ApplicationRevokedV1>
-    applicationRevokedKafkaListenerContainerFactory(
+            applicationRevokedKafkaListenerContainerFactory(
             ConsumerFactory<String, ApplicationRevokedV1> consumerFactory,
             DefaultErrorHandler applicationRevokedErrorHandler
     ) {

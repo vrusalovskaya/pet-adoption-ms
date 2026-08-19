@@ -62,7 +62,8 @@ class GridFsImageStorageIT {
 
         storage.delete(stored.key());
 
-        assertThatThrownBy(() -> storage.load(stored.key()))
+        String key = stored.key();
+        assertThatThrownBy(() -> storage.load(key))
                 .isInstanceOf(ImageNotFoundException.class);
     }
 

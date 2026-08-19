@@ -1,8 +1,8 @@
 package com.wise.catalog_service.shelter.service;
 
 import com.wise.catalog_service.shelter.domain.CreateShelterCommand;
-import com.wise.catalog_service.shelter.domain.UpdateShelterCommand;
 import com.wise.catalog_service.shelter.domain.Shelter;
+import com.wise.catalog_service.shelter.domain.UpdateShelterCommand;
 import com.wise.catalog_service.shelter.exception.ShelterNotFoundException;
 import com.wise.catalog_service.shelter.mapper.ShelterEntityMapper;
 import com.wise.catalog_service.shelter.persistence.ShelterEntity;

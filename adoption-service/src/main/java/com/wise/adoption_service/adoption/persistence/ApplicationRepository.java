@@ -17,15 +17,15 @@ public interface ApplicationRepository extends
     Page<ApplicationEntity> findByApplicantId(Long applicantId, Pageable pageable);
 
     @Query("""
-        select application from ApplicationEntity application
-        where application.applicantId = :applicantId and application.status = 'APPROVED'
-        """)
+            select application from ApplicationEntity application
+            where application.applicantId = :applicantId and application.status = 'APPROVED'
+            """)
     List<ApplicationEntity> findApprovedByApplicantId(Long applicantId);
 
     @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Query("""
-        delete from ApplicationEntity application
-        where application.applicantId = :applicantId
-        """)
+            delete from ApplicationEntity application
+            where application.applicantId = :applicantId
+            """)
     void deleteByApplicantId(@Param("applicantId") Long applicantId);
 }

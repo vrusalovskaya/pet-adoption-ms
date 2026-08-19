@@ -1,10 +1,10 @@
 package com.wise.catalog_service.animal.controller;
 
 import com.wise.catalog_service.animal.service.AnimalPhotoService;
+import com.wise.catalog_service.security.Role;
 import com.wise.catalog_service.security.SecurityUser;
 import com.wise.catalog_service.shared.storage.model.StoredImageStream;
 import com.wise.catalog_service.support.WebMvcTestSecurityConfig;
-import com.wise.catalog_service.security.Role;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;

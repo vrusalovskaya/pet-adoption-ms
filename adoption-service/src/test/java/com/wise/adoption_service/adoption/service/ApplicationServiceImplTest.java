@@ -170,7 +170,8 @@ class ApplicationServiceImplTest {
         ApplicationEntity entity = applicationEntity(10L, 5L, 1L, ApplicationStatus.CANCELLED);
         when(applicationRepository.findById(10L)).thenReturn(Optional.of(entity));
 
-        assertThatThrownBy(() -> applicationService.reject(new RejectionCommand(10L, "x")))
+        RejectionCommand command = new RejectionCommand(10L, "x");
+        assertThatThrownBy(() -> applicationService.reject(command))
                 .isInstanceOf(ApplicationNotPendingException.class);
     }
 

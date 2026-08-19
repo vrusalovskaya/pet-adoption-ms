@@ -31,6 +31,18 @@ public class AnimalController {
     private final AnimalService animalService;
     private final AnimalResponseMapper responseMapper;
 
+    private static CreateAnimalCommand toCommand(AnimalRequest request) {
+        return new CreateAnimalCommand(
+                request.shelterId(), request.name(), request.species(), request.breed(), request.birthYear(),
+                request.gender(), request.description());
+    }
+
+    private static UpdateAnimalCommand toCommand(Long id, AnimalRequest request) {
+        return new UpdateAnimalCommand(
+                id, request.shelterId(), request.name(), request.species(), request.breed(), request.birthYear(),
+                request.gender(), request.description());
+    }
+
     @GetMapping("/{id}")
     public AnimalResponse get(@PathVariable Long id) {
         Animal animal = animalService.get(id);
@@ -87,17 +99,5 @@ public class AnimalController {
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         animalService.delete(id);
         return ResponseEntity.noContent().build();
-    }
-
-    private static CreateAnimalCommand toCommand(AnimalRequest request) {
-        return new CreateAnimalCommand(
-                request.shelterId(), request.name(), request.species(), request.breed(), request.birthYear(),
-                request.gender(), request.description());
-    }
-
-    private static UpdateAnimalCommand toCommand(Long id, AnimalRequest request) {
-        return new UpdateAnimalCommand(
-                id, request.shelterId(), request.name(), request.species(), request.breed(), request.birthYear(),
-                request.gender(), request.description());
     }
 }

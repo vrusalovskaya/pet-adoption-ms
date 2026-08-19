@@ -50,9 +50,9 @@ public class UserDeletedConsumerFailureHandlingConfig {
     ) {
         DeadLetterPublishingRecoverer recoverer = new DeadLetterPublishingRecoverer(
                 userDeletedDltKafkaTemplate,
-                (record, exception) -> new TopicPartition(
+                (consumerRecord, exception) -> new TopicPartition(
                         kafkaTopicsProperties.getUserDeletedDlt(),
-                        record.partition()
+                        consumerRecord.partition()
                 )
         );
 

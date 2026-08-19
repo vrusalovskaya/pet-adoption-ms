@@ -12,7 +12,11 @@ FROM eclipse-temurin:21-jre-alpine
 
 WORKDIR /app
 
-COPY --from=builder /build/target/*.jar app.jar
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+
+COPY --chown=appuser:appgroup --from=builder /build/target/*.jar app.jar
+
+USER appuser
 
 EXPOSE 8080
 

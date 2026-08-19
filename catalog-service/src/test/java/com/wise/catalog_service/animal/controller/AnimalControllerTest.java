@@ -12,7 +12,6 @@ import com.wise.catalog_service.security.Role;
 import com.wise.catalog_service.security.SecurityUser;
 import com.wise.catalog_service.support.TestFixtures;
 import com.wise.catalog_service.support.WebMvcTestSecurityConfig;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
@@ -26,7 +25,6 @@ import org.springframework.test.web.servlet.request.RequestPostProcessor;
 import static com.wise.catalog_service.support.TestFixtures.animal;
 import static com.wise.catalog_service.support.TestFixtures.securityUser;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.authentication;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -131,7 +129,7 @@ class AnimalControllerTest {
 
     @Test
     void updateStatus_AdminUser_ReturnsOk() throws Exception {
-        when(animalService.setStatus(eq(1L), eq(AnimalStatus.RESERVED)))
+        when(animalService.setStatus(1L, AnimalStatus.RESERVED))
                 .thenReturn(animal(1L, AnimalStatus.RESERVED, 7L));
         when(responseMapper.toResponse(any())).thenReturn(animalResponse());
         String body = """

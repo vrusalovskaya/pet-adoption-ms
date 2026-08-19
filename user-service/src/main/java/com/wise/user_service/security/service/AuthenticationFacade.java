@@ -1,10 +1,6 @@
 package com.wise.user_service.security.service;
 
-import com.wise.user_service.security.domain.AuthenticationResult;
-import com.wise.user_service.security.domain.LoginCommand;
-import com.wise.user_service.security.domain.RegisterCommand;
-import com.wise.user_service.security.domain.LogoutCommand;
-import com.wise.user_service.security.domain.RefreshCommand;
+import com.wise.user_service.security.domain.*;
 
 public interface AuthenticationFacade {
     AuthenticationResult login(LoginCommand command);

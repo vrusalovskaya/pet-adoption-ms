@@ -3,6 +3,7 @@ package com.wise.catalog_service.shared.storage.minio;
 import io.minio.BucketExistsArgs;
 import io.minio.MakeBucketArgs;
 import io.minio.MinioClient;
+import io.minio.errors.MinioException;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Conditional;
@@ -17,7 +18,7 @@ public class MinioBucketInitializer {
     private final MinioProperties properties;
 
     @PostConstruct
-    public void init() throws Exception {
+    public void init() throws MinioException {
 
         boolean exists = minioClient.bucketExists(
                 BucketExistsArgs.builder().bucket(properties.getBucketName()).build());
